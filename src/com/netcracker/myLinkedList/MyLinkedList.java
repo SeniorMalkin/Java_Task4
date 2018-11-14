@@ -213,47 +213,31 @@ public class MyLinkedList<E> implements ILinkedList<E> {
         MyListIterator<E> it1 = myIterator(0);
         if(size!=list.size)
             return false;
-        for (E node: list
-             ) {
 
-        }
-        while(it.hasNext()) {
+        do {
+            it.next();
+            it1.next();
             if(!(it1.get()).equals(it.get())) {
                 return false;
             }
-            it.next();
-            it1.next();
-        }
+        }while(it.hasNext());
         return true;
     }
 
     private class MyListItr<E> implements MyListIterator<E> {
          private int prevInd;
-         private MyNode<E> curr;
+         private MyNode<E> next;
+         private MyNode<E> returned;
+         private int retInd;
          private int nextInd;
          int itSize;
 
         public MyListItr(int index) {
             rangeIndex(index);
             itSize = size;
-            if(index == 0){
-                curr = (MyNode<E>) getNode(0);
-                nextInd = 1;
-                prevInd = -1;
-            }
-            else{
-                if(index == (itSize -1)){
-                    curr = (MyNode<E>) getNode(itSize - 1);
-                    prevInd = index - 1;
-                    nextInd = itSize;
-                }
-                else{
-                    curr = (MyNode<E>) getNode(index);
-                    prevInd = index - 1;
-                    nextInd = index + 1;
-                }
-            }
-
+            nextInd = index;
+            prevInd = nextInd -1;
+            next = (MyNode<E>) getNode(nextInd);
         }
 
         @Override
@@ -281,10 +265,13 @@ public class MyLinkedList<E> implements ILinkedList<E> {
             if(!hasNext()){
                 throw new NoSuchElementException("The next element doesn't exist");
             }
+            retInd = nextInd;
             nextInd++;
-            curr = curr.next;
             prevInd++;
-            return curr.value;
+            returned = next;
+            next = next.next;
+
+           return returned.value;
         }
 
         @Override
@@ -302,9 +289,13 @@ public class MyLinkedList<E> implements ILinkedList<E> {
                 throw new NoSuchElementException("The previous element doesn't exist");
             }
             nextInd--;
-            curr = curr.prev;
             prevInd--;
-            return curr.value;
+
+            next = next.prev;
+            retInd = nextInd;
+            returned = next;
+
+            return returned.value;
         }
 
         @Override
@@ -317,36 +308,35 @@ public class MyLinkedList<E> implements ILinkedList<E> {
 
         @Override
         public void remove() {
-            MyLinkedList.this.remove(nextInd - 1);
-            if(hasNext()){
+            if(returned == null) {
+                throw new NoSuchElementException("The element doesn't exist");
+            }
+            if(retInd == nextInd){
                 nextInd++;
-                curr= curr.next;
+                next = next.next;
                 itSize--;
             }
-            else{
-                if(hasPrevious()){
-                    prevInd--;
-                    curr=curr.prev;
-                    itSize--;
-                }
-                else{
-                    curr = null;
-                    itSize = 0;
-                }
+            MyLinkedList.this.remove(retInd);
 
-            }
+
 
         }
 
         @Override
         public void set(E e) {
-            curr.value = e;
+            if(returned == null) {
+                throw new NoSuchElementException("The element doesn't exist");
+            }
+           returned.value = e;
 
         }
 
         @Override
         public E get() {
-            return curr.value;
+            if(returned == null) {
+                throw new NoSuchElementException("The element doesn't exist");
+            }
+            return returned.value;
         }
 
     }
