@@ -1,14 +1,11 @@
 package com.netcracker.myLinkedList;
 
-import com.netcracker.myLinkedList.ILinkedList;
-
 import java.lang.reflect.Array;
-import java.util.Iterator;
-import java.util.function.Consumer;
+import java.util.*;
 
 public class MyLinkedList<E> implements ILinkedList<E> {
-    private int size;
-    private Class classE;
+    int size;
+    Class classE;
 
     private MyNode<E> first;
 
@@ -65,12 +62,12 @@ public class MyLinkedList<E> implements ILinkedList<E> {
         }
         size++;
     }
-    private void rangeIndex(int index){
+    void rangeIndex(int index){
         if((index < 0) || (index >= size)){
             throw new IndexOutOfBoundsException("Incorrect index element in list:" + index );
         }
     }
-    private void positionIndex(int index){
+    void positionIndex(int index){
         if((index < 0) || (index > size)){
             throw new IndexOutOfBoundsException("Incorrect position index element in list:" + index );
         }
@@ -115,11 +112,6 @@ public class MyLinkedList<E> implements ILinkedList<E> {
         }
 
         return -1;
-    }
-
-    @Override
-    public void forEach(Consumer<? super E> action) {
-
     }
 
     @Override
@@ -168,6 +160,15 @@ public class MyLinkedList<E> implements ILinkedList<E> {
         return curr.value;
     }
 
+    MyNode<E> getNode(int index){
+        rangeIndex(index);
+        MyNode<E> curr = first;
+        for(int i=0;i<index;i++){
+            curr=curr.next;
+        }
+        return curr;
+    }
+
     @Override
     public int size() {
         return size;
@@ -186,9 +187,16 @@ public class MyLinkedList<E> implements ILinkedList<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new MyListItr<E>(0,this);
+        return new MyListItr<E>(0);
     }
 
+    public Iterator<E> iterator(int index)
+    {
+        return  new MyListItr<E>(index);
+    }
+    public MyListIterator<E> myIterator(int index){
+        return  new MyListItr<E>(index);
+    }
     @Override
     public int hashCode() {
         return super.hashCode();
@@ -196,7 +204,163 @@ public class MyLinkedList<E> implements ILinkedList<E> {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if(this == obj)
+            return true;
+        if(!(obj instanceof MyLinkedList))
+            return false;
+        MyLinkedList<E> list = (MyLinkedList<E>)obj;
+        MyListIterator<E> it = list.myIterator(0);
+        MyListIterator<E> it1 = myIterator(0);
+        if(size!=list.size)
+            return false;
+        for (E node: list
+             ) {
+
+        }
+        while(it.hasNext()) {
+            if(!(it1.get()).equals(it.get())) {
+                return false;
+            }
+            it.next();
+            it1.next();
+        }
+        return true;
+    }
+
+    private class MyListItr<E> implements MyListIterator<E> {
+         private int prevInd;
+         private MyNode<E> curr;
+         private int nextInd;
+         int itSize;
+
+        public MyListItr(int index) {
+            rangeIndex(index);
+            itSize = size;
+            if(index == 0){
+                curr = (MyNode<E>) getNode(0);
+                nextInd = 1;
+                prevInd = -1;
+            }
+            else{
+                if(index == (itSize -1)){
+                    curr = (MyNode<E>) getNode(itSize - 1);
+                    prevInd = index - 1;
+                    nextInd = itSize;
+                }
+                else{
+                    curr = (MyNode<E>) getNode(index);
+                    prevInd = index - 1;
+                    nextInd = index + 1;
+                }
+            }
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            if(nextInd < itSize)
+                return true;
+            return false;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            if(prevInd >= 0)
+                return true;
+            return false;
+        }
+        private void checkExternalChange(){
+            if(itSize != size){
+                throw new ConcurrentModificationException("Struct list has been changed outside of iterator");
+            }
+        }
+
+        @Override
+        public E next() {
+            checkExternalChange();
+            if(!hasNext()){
+                throw new NoSuchElementException("The next element doesn't exist");
+            }
+            nextInd++;
+            curr = curr.next;
+            prevInd++;
+            return curr.value;
+        }
+
+        @Override
+        public int nextIndex() {
+            if(!hasNext()){
+                return -1;
+            }
+            return nextInd;
+        }
+
+        @Override
+        public E previous() {
+            checkExternalChange();
+            if(!hasPrevious()){
+                throw new NoSuchElementException("The previous element doesn't exist");
+            }
+            nextInd--;
+            curr = curr.prev;
+            prevInd--;
+            return curr.value;
+        }
+
+        @Override
+        public int previousIndex() {
+            if(!hasPrevious()){
+                return -1;
+            }
+            return prevInd;
+        }
+
+        @Override
+        public void remove() {
+            MyLinkedList.this.remove(nextInd - 1);
+            if(hasNext()){
+                nextInd++;
+                curr= curr.next;
+                itSize--;
+            }
+            else{
+                if(hasPrevious()){
+                    prevInd--;
+                    curr=curr.prev;
+                    itSize--;
+                }
+                else{
+                    curr = null;
+                    itSize = 0;
+                }
+
+            }
+
+        }
+
+        @Override
+        public void set(E e) {
+            curr.value = e;
+
+        }
+
+        @Override
+        public E get() {
+            return curr.value;
+        }
+
+    }
+    private static class MyNode<E> {
+        E value;
+        MyNode<E> prev;
+        MyNode<E> next;
+
+        public MyNode(E value, MyNode<E> prev, MyNode<E> next) {
+            this.value = value;
+            this.prev = prev;
+            this.next = next;
+        }
+
     }
 }
 
