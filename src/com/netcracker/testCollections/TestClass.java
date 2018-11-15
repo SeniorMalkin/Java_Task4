@@ -102,6 +102,57 @@ public class TestClass<E> {
         estimatedTime = System.nanoTime() - startTime;
         System.out.println("Tree Set time: " + estimatedTime);
 
+    }
+
+    public void compareMap(Map<String,E> hashMap, Map<String,E> linkHashMap,Map<String,E> treeMap,String key, E elem){
+
+        //Compare "put"
+        System.out.println("Compare `put`: ");
+        startTime = System.nanoTime();
+        hashMap.put(key,elem);
+        estimatedTime = System.nanoTime() - startTime;
+        System.out.println("Hash Map time: " + estimatedTime);
+        startTime = System.nanoTime();
+        linkHashMap.put(key,elem);
+        estimatedTime = System.nanoTime() - startTime;
+        System.out.println("Linked Hash Map time: " + estimatedTime);
+        startTime = System.nanoTime();
+        treeMap.put(key,elem);
+        estimatedTime = System.nanoTime() - startTime;
+        System.out.println("Tree Set time: " + estimatedTime);
+
+
+
+        //Compare "get"
+        System.out.println("Compare `get`: ");
+        startTime = System.nanoTime();
+        hashMap.get(key);
+        estimatedTime = System.nanoTime() - startTime;
+        System.out.println("Hash Map time: " + estimatedTime);
+        startTime = System.nanoTime();
+        linkHashMap.get(key);
+        estimatedTime = System.nanoTime() - startTime;
+        System.out.println("Linked Hash Map time: " + estimatedTime);
+        startTime = System.nanoTime();
+        treeMap.get(key);
+        estimatedTime = System.nanoTime() - startTime;
+        System.out.println("Tree Map time: " + estimatedTime);
+
+
+        //Compare "remove"
+        System.out.println("Compare `remove`: ");
+        startTime = System.nanoTime();
+        hashMap.remove(key);
+        estimatedTime = System.nanoTime() - startTime;
+        System.out.println("Hash Map time: " + estimatedTime);
+        startTime = System.nanoTime();
+        linkHashMap.remove(key);
+        estimatedTime = System.nanoTime() - startTime;
+        System.out.println("Linked Hash Map time: " + estimatedTime);
+        startTime = System.nanoTime();
+        treeMap.remove(key);
+        estimatedTime = System.nanoTime() - startTime;
+        System.out.println("Tree Map time: " + estimatedTime);
 
     }
 }
