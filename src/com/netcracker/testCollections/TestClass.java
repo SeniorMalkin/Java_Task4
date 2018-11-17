@@ -27,6 +27,7 @@ public class TestClass<E> {
         arrayList.add(elem);
         estimatedTime = System.nanoTime() - startTime;
         System.out.println("Array List time: " + estimatedTime);
+        System.out.println(" ");
 
         //Compare "add" with parameters
         System.out.println("Compare `insert`: ");
@@ -38,6 +39,7 @@ public class TestClass<E> {
         arrayList.add(357777,elem);
         estimatedTime = System.nanoTime() - startTime;
         System.out.println("Array List time: " + estimatedTime);
+        System.out.println(" ");
 
 
         //Compare "remove"
@@ -50,6 +52,8 @@ public class TestClass<E> {
         linkedList.remove(355557);
         estimatedTime = System.nanoTime() - startTime;
         System.out.println("Linked List time: " + estimatedTime);
+        System.out.println(" ");
+        System.out.println("/////////////////////////////////////////////////////////");
 
     }
 
@@ -68,6 +72,7 @@ public class TestClass<E> {
         treeSet.add(elem);
         estimatedTime = System.nanoTime() - startTime;
         System.out.println("Tree Set time: " + estimatedTime);
+        System.out.println(" ");
 
 
 
@@ -85,6 +90,7 @@ public class TestClass<E> {
         treeSet.remove(elem);
         estimatedTime = System.nanoTime() - startTime;
         System.out.println("Tree Set time: " + estimatedTime);
+        System.out.println(" ");
 
 
         //Compare "contains"
@@ -101,6 +107,8 @@ public class TestClass<E> {
         treeSet.contains(elem);
         estimatedTime = System.nanoTime() - startTime;
         System.out.println("Tree Set time: " + estimatedTime);
+        System.out.println(" ");
+        System.out.println("///////////////////////////////////////////////////////");
 
     }
 
@@ -120,6 +128,7 @@ public class TestClass<E> {
         treeMap.put(key,elem);
         estimatedTime = System.nanoTime() - startTime;
         System.out.println("Tree Set time: " + estimatedTime);
+        System.out.println(" ");
 
 
 
@@ -137,6 +146,7 @@ public class TestClass<E> {
         treeMap.get(key);
         estimatedTime = System.nanoTime() - startTime;
         System.out.println("Tree Map time: " + estimatedTime);
+        System.out.println(" ");
 
 
         //Compare "remove"
@@ -153,6 +163,8 @@ public class TestClass<E> {
         treeMap.remove(key);
         estimatedTime = System.nanoTime() - startTime;
         System.out.println("Tree Map time: " + estimatedTime);
+        System.out.println(" ");
+        System.out.println("///////////////////////////////////////////////////////////////////// ");
 
     }
 }

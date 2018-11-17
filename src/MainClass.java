@@ -8,6 +8,7 @@ public class MainClass {
     public static void compareList(){
       MyLinkedList<String> list = new MyLinkedList<>(String.class);
       LinkedList<String> list1 = new LinkedList<>();
+
       long startTime ;
       long estimatedTime;
 
@@ -26,6 +27,7 @@ public class MainClass {
       list1.add("tea");
       estimatedTime = System.nanoTime() - startTime;
       System.out.println("Standart time: " + estimatedTime);
+      System.out.println(" ");
 
       list.add("juice");
       list.add("water");
@@ -44,6 +46,7 @@ public class MainClass {
       list1.add(7777,"beer");
       estimatedTime = System.nanoTime() - startTime;
       System.out.println("Standart time: " + estimatedTime);
+      System.out.println(" ");
 
       //Compare "indexOf"
       System.out.println("Compare `indexOf`: ");
@@ -55,6 +58,7 @@ public class MainClass {
       index = list1.indexOf("water");
       estimatedTime = System.nanoTime() - startTime;
       System.out.println("Standart time: " + estimatedTime + "   index:" + index);
+      System.out.println(" ");
 
       //Compare "remove"
       System.out.println("Compare `remove`: ");
@@ -66,85 +70,19 @@ public class MainClass {
       list1.remove(5557);
       estimatedTime = System.nanoTime() - startTime;
       System.out.println("Standart time: " + estimatedTime);
+      System.out.println(" ");
+      System.out.println("/////////////////////////////////////////////////////////");
 
     }
+
     public static void main(String[] args) {
 
-      MyLinkedList<String> list = new MyLinkedList<>(String.class);
-      String[] arr;
-      list.add("ab");
-      list.add("cc");
-      list.add("dc");
-      list.add("aa");
-      list.add(2,"fruct");
-      list.add(5,"ovosh");
-      System.out.println(list.get(2));
-      System.out.println(list.get(5));
-      System.out.println(list.get(0));
-      System.out.println(list.size());
-      System.out.println(list.indexOf("dc"));
-      list.set(0,"simusinka");
-      list.set(5,"sam te ovosh");
-      arr = list.toArray();
-      for ( String elem: arr
-      ) {
-          System.out.print(elem + "  ");
-      }
-      list.remove(5);
-      list.remove(0);
-      list.remove(1);
-      list.add("asda");
-      System.out.println("  ");
-      arr = list.toArray();
-      for ( String elem: arr
-      ) {
-          System.out.print(elem + "  ");
-      }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////TEST ITERATOR///////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-      MyLinkedList<String> list1 = new MyLinkedList<>(String.class);
-      list1.add("cc");
-      list1.add("dc");
-      list1.add("aa");
-      list1.add("asda");
-      boolean flag = list.equals(list1);
-      for (String node: list1
-           ) {
-        System.out.println(node);
-      }
-
-      MyListIterator<String> it = list.myIterator(0);
-      for(it.next();it.hasNext();it.next()){
-        System.out.println(it.get());
-      }
-      System.out.println(it.get());
-
-      it = list.myIterator(0);
-      it.next();
-      it.set("wow");
-      it.next();
-      it.next();
-      it.previous();
-      System.out.println(it.get());
-      System.out.println(it.nextIndex());
-      System.out.println(it.previousIndex());
-      it.previous();
-      it.remove();
-
-      for (String node: list
-      ) {
-        System.out.println(node);
-      }
-
-      //compareList();
-        int count = 200000;
-        TestClass<String> test = new TestClass<>(13000);
+      compareList();
+      int count = 200000;
+      TestClass<String> test = new TestClass<>(1200000);
       LinkedList<String> linkedList = new LinkedList<>();
       ArrayList<String> arrayList = new ArrayList<>();
-      //test.compareList(linkedList,arrayList,"default","origg");
+      test.compareList(linkedList,arrayList,"default","origg");
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +100,7 @@ public class MainClass {
           linkedHashSet.add( new String(str));
           treeSet.add( new String(str));
       }
-      //test.compareSet(hashSet,linkedHashSet,treeSet,"queen");
+      test.compareSet(hashSet,linkedHashSet,treeSet,"queen");
 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -183,7 +121,6 @@ public class MainClass {
       }
 
       test.compareMap(hashMap,linkedHashMap,treeMap,"asasfew","qwerty");
-
 
     }
 }

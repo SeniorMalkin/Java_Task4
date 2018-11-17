@@ -4,8 +4,8 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class MyLinkedList<E> implements ILinkedList<E> {
-    int size;
-    Class classE;
+    private int size;
+    private Class classE;
 
     private MyNode<E> first;
 
@@ -82,6 +82,8 @@ public class MyLinkedList<E> implements ILinkedList<E> {
             node.prev = null;
             node = next;
         }
+        first = null;
+        last = null;
         size = 0;
     }
 
@@ -195,6 +197,7 @@ public class MyLinkedList<E> implements ILinkedList<E> {
         return  new MyListItr<E>(index);
     }
     public MyListIterator<E> myIterator(int index){
+        positionIndex(index);
         return  new MyListItr<E>(index);
     }
     @Override
@@ -209,10 +212,12 @@ public class MyLinkedList<E> implements ILinkedList<E> {
         if(!(obj instanceof MyLinkedList))
             return false;
         MyLinkedList<E> list = (MyLinkedList<E>)obj;
+        if(size!=list.size || !classE.equals(list.classE))
+            return false;
+        if(size == 0)
+            return true;
         MyListIterator<E> it = list.myIterator(0);
         MyListIterator<E> it1 = myIterator(0);
-        if(size!=list.size)
-            return false;
 
         do {
             it.next();
@@ -233,11 +238,15 @@ public class MyLinkedList<E> implements ILinkedList<E> {
          int itSize;
 
         public MyListItr(int index) {
-            rangeIndex(index);
             itSize = size;
             nextInd = index;
             prevInd = nextInd -1;
-            next = (MyNode<E>) getNode(nextInd);
+            if(itSize != 0) {
+                next = (MyNode<E>) getNode(nextInd);
+            }
+            else{
+                next = null;
+            }
         }
 
         @Override
@@ -288,13 +297,12 @@ public class MyLinkedList<E> implements ILinkedList<E> {
             if(!hasPrevious()){
                 throw new NoSuchElementException("The previous element doesn't exist");
             }
+            returned = (MyNode<E>)getNode(prevInd);
+            retInd = prevInd;
             nextInd--;
             prevInd--;
 
-            next = next.prev;
-            retInd = nextInd;
-            returned = next;
-
+            next = returned;
             return returned.value;
         }
 
@@ -311,14 +319,13 @@ public class MyLinkedList<E> implements ILinkedList<E> {
             if(returned == null) {
                 throw new NoSuchElementException("The element doesn't exist");
             }
-            if(retInd == nextInd){
+            if(retInd == nextInd && hasNext()){
                 nextInd++;
                 next = next.next;
                 itSize--;
             }
             MyLinkedList.this.remove(retInd);
-
-
+            returned = null;
 
         }
 
