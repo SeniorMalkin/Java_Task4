@@ -1,3 +1,4 @@
+import com.netcracker.myLinkedList.ILinkedList;
 import com.netcracker.myLinkedList.MyLinkedList;
 import com.netcracker.myLinkedList.MyListIterator;
 import com.netcracker.testCollections.TestClass;
@@ -5,10 +6,9 @@ import com.netcracker.testCollections.TestClass;
 import java.util.*;
 
 public class MainClass {
-    public static void compareList(){
+    private static void compareList(){
       MyLinkedList<String> list = new MyLinkedList<>(String.class);
       LinkedList<String> list1 = new LinkedList<>();
-
       long startTime ;
       long estimatedTime;
 
@@ -36,6 +36,14 @@ public class MainClass {
       list1.add("water");
       list1.add("whiskey");
 
+      compareAdd(list,list1);
+      compareIndOf(list,list1);
+      compareRemove(list,list1);
+    }
+
+    private static void compareAdd(ILinkedList<String> list,List<String> list1){
+      long startTime ;
+      long estimatedTime;
       //Compare "add" with parameters
       System.out.println("Compare `add` with parameters: ");
       startTime = System.nanoTime();
@@ -47,8 +55,12 @@ public class MainClass {
       estimatedTime = System.nanoTime() - startTime;
       System.out.println("Standart time: " + estimatedTime);
       System.out.println(" ");
+    }
 
+    private static void compareIndOf(ILinkedList<String> list,List<String> list1){
       //Compare "indexOf"
+      long startTime ;
+      long estimatedTime;
       System.out.println("Compare `indexOf`: ");
       startTime = System.nanoTime();
       int index = list.indexOf("water");
@@ -59,8 +71,12 @@ public class MainClass {
       estimatedTime = System.nanoTime() - startTime;
       System.out.println("Standart time: " + estimatedTime + "   index:" + index);
       System.out.println(" ");
+    }
 
+    private static void compareRemove(ILinkedList<String> list,List<String> list1){
       //Compare "remove"
+      long startTime ;
+      long estimatedTime;
       System.out.println("Compare `remove`: ");
       startTime = System.nanoTime();
       list.remove(5557);
@@ -72,55 +88,22 @@ public class MainClass {
       System.out.println("Standart time: " + estimatedTime);
       System.out.println(" ");
       System.out.println("/////////////////////////////////////////////////////////");
-
     }
 
     public static void main(String[] args) {
 
       compareList();
-      int count = 200000;
-      TestClass<String> test = new TestClass<>(1200000);
-      LinkedList<String> linkedList = new LinkedList<>();
-      ArrayList<String> arrayList = new ArrayList<>();
-      test.compareList(linkedList,arrayList,"default","origg");
-
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      HashSet<String> hashSet = new HashSet<>();
-      LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>();
-      TreeSet<String> treeSet = new TreeSet<>();
-      String charcters = "0qwe1mnb2rty3vcx4uio5zlk6pas7jhg8df9";
-      char[] str = new char[10];
-      Random random = new Random();
-      for(int i=0;i<=count;i++){
-          for(int j=0;j<10;j++){
-              str[j] = charcters.charAt(random.nextInt(charcters.length()));
-          }
-          hashSet.add( new String(str));
-          linkedHashSet.add( new String(str));
-          treeSet.add( new String(str));
-      }
-      test.compareSet(hashSet,linkedHashSet,treeSet,"queen");
-
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      HashMap<String,String> hashMap =  new HashMap<>();
-      LinkedHashMap<String,String> linkedHashMap = new LinkedHashMap<>();
-      TreeMap<String,String> treeMap = new TreeMap<>();
-      char[] str1 = new char[10];
-      for(int i=0;i<=count;i++){
-        for(int j=0;j<10;j++){
-          str[j] = charcters.charAt(random.nextInt(charcters.length()));
-        }
-        for(int k=0;k<10;k++){
-          str1[k] = charcters.charAt(random.nextInt(charcters.length()));
-        }
-        hashMap.put(new String(str),new String(str1));
-        linkedHashMap.put(new String(str),new String(str1));
-        treeMap.put(new String(str),new String(str1));
-      }
-
-      test.compareMap(hashMap,linkedHashMap,treeMap,"asasfew","qwerty");
+      int count = 1200000;
+      TestClass test = new TestClass(count);
+      test.compareAddList("origg");
+      test.compareAddParList("origg");
+      test.compareRemoveList();
+      test.compareAddSet("queen");
+      test.compareRemoveSet("queen");
+      test.compareContainsSet("queen");
+      test.comparePutMap("asasfew","qwerty");
+      test.compareGetMap("asasfew");
+      test.compareRemoveMap("asasfew");
 
     }
 }
